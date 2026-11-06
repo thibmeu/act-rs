@@ -22,13 +22,16 @@ std = ["ec-ihat/std", "p256?/std", "p256?/precomputed-tables"]
 # Randomness from the JavaScript host on `wasm32-unknown-unknown`, for the
 # `rustcrypto` backend; other bare targets need a `getrandom` custom backend.
 wasm_js = ["ec-ihat/wasm_js"]
+# The `rustcrypto` backend with scalar multiplication imported from the host
+# under Wasm; see ihat-rs's `host` feature. H1-H4 keep their tables.
+host = ["rustcrypto", "ec-ihat/host"]
 # BoringSSL backend over the `bssl-sys` FFI bindings. `bssl-sys` is not
 # published; patch it to a BoringSSL checkout (see README). SHAKE128 comes
 # from the `shake` crate until BoringSSL exports its Keccak.
 boringssl = ["ec-ihat/boringssl"]
 
 [dependencies]
-ec-ihat = { package = "ihat-rs", version = "0.1.0", git = "https://github.com/Moderation-of-unLinkable-Endorsements/ihat-rs", rev = "3767cebd01936be5bfcfece75005c4524243cd08", default-features = false }
+ec-ihat = { package = "ihat-rs", version = "0.1.0", git = "https://github.com/thibmeu/ihat-rs", rev = "350ec812c28b3cbb74b5626d6d025f0b29cd1766", default-features = false }
 subtle = { version = "2.6", default-features = false }
 zeroize = { version = "1.7", default-features = false, features = ["alloc"] }
 
@@ -41,7 +44,7 @@ hex = "0.4"
 [package.metadata.docs.rs]
 features = ["rustcrypto"]
 
-[dev-dependencies.criterion]
+[target.'cfg(not(target_os = "emscripten"))'.dev-dependencies.criterion]
 version = "0.8"
 
 [[bench]]

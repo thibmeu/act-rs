@@ -454,7 +454,7 @@ dependencies = [
 [[package]]
 name = "ihat-rs"
 version = "0.1.0"
-source = "git+https://github.com/Moderation-of-unLinkable-Endorsements/ihat-rs?rev=3767cebd01936be5bfcfece75005c4524243cd08#3767cebd01936be5bfcfece75005c4524243cd08"
+source = "git+https://github.com/thibmeu/ihat-rs?rev=350ec812c28b3cbb74b5626d6d025f0b29cd1766#350ec812c28b3cbb74b5626d6d025f0b29cd1766"
 dependencies = [
  "bssl-sys",
  "getrandom",

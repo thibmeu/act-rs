@@ -75,6 +75,25 @@ so the `boringssl` configuration uses RustCrypto's implementation until
 BoringSSL exposes it through a public header and the `bssl-sys` bindings.
 The sponge only ever absorbs public data; see `src/sigma.rs` for its use.
 
+### Host scalar multiplication
+
+Enable `host` for RustCrypto scalar multiplication through the Wasm
+embedder's native P-256. H1-H4 keep their RustCrypto tables. The pinned
+[ihat-rs host implementation](https://github.com/thibmeu/ihat-rs/blob/350ec812c28b3cbb74b5626d6d025f0b29cd1766/README.md#host-scalar-multiplication)
+provides the Emscripten imports and workerd test runner. On native targets,
+reference imports use `p256`, so `cargo test --features host` also works.
+
+To run ACT's library tests and vectors with actual workerd ECDH, check out
+that IHAT revision and run (with emcc and workerd on PATH):
+
+```sh
+rustup target add wasm32-unknown-emscripten
+node /path/to/ihat-rs/scripts/test-host.mjs "$PWD"
+```
+
+The runtime boundary has not been established to be constant time. Secret
+scalars and ECDH outputs enter host memory that this crate cannot wipe.
+
 ### Building the BoringSSL backend
 
 `bssl-sys` is not published on crates.io (the registry entry is a
